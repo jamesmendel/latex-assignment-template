@@ -1,0 +1,91 @@
+% ----------------------------------------------------------------
+% * Project           : Custom paper with detailed headers
+% * File name         : main.tex
+% * Author            : James Mendel; jrm@ku.edu; jrm.mendel@gmail.com
+% * Website           : jamesmendel.github.io
+% * Date created      : 11/10/2020
+% * Purpose           : Dotted background template generator.
+% * Revision History  :
+% *
+% * Date          Author        Description
+% * MM/DD/YYYY    First Last 
+% *
+% ----------------------------------------------------------------
+
+\documentclass[letterpaper, 10pt]{article} % for letter sized paper (8.5" x 11") 
+% \usepackage[vmargin=2cm]{geometry}
+\usepackage[ansiapaper, total={7.5in, 9.1in}]{geometry}
+\usepackage{tikzpagenodes}
+\usepackage{lipsum}
+\usepackage{background}
+\usepackage{etoolbox}
+
+% --- Setting up header/footer ---
+\usepackage{fancyhdr}
+\usepackage[bottom,norule]{footmisc}
+
+\usepackage{hyperref}
+
+% --- Import document info (change this file) ---
+\input{details.tex}
+
+\hypersetup{
+    pdftitle={\assignmentType{ }\assignmentNumber},
+    pdfauthor={\name},
+    colorlinks=true,
+    linkcolor=black,
+    bookmarks=true,
+    bookmarksopen=true,
+    pdfpagemode=UseOutlines,
+    }
+
+% ----------------------------------------------------------------
+% Setup header from variables declared in details.tex
+% ----------------------------------------------------------------
+\pagestyle{fancy}
+\rfoot{}
+\lfoot{}
+\cfoot{}
+% --- LEFT HEADER SECTION ---
+\lhead{
+    \dueMonth{}
+    \oldstylenums{\dueDay} 
+    \oldstylenums{\dueYear}
+}
+% --- CENTER HEADER SECTION ---
+\chead{
+    \textbf{\classNumber} \ifdefempty{\className}{}{\textemdash{ \className}}%
+    \\\assignmentType{ } \assignmentNumber
+}
+% --- RIGHT HEADER SECTION ---
+\rhead{
+    \textsc{\name}\\
+    \ifdefempty{\kuid}{}{\textsc{kuid: \kuid}}}
+
+
+% ----------------------------------------------------------------
+% Create background grid of dots
+% ----------------------------------------------------------------
+\definecolor{dotcolor}{RGB}{150,150,150}
+\backgroundsetup{
+contents={%   
+  \begin{tikzpicture}
+    \foreach \xdot in {0,...,34}{
+        \foreach \ydot in {0,...,44}{
+            \fill[color=dotcolor] (\xdot,\ydot)  circle[radius=.85pt];
+        } 
+    }
+  \end{tikzpicture}%
+},
+scale=.65,
+angle=0,
+opacity=1
+}
+
+% ----------------------------------------------------------------
+% Render exactly one page with header and footer
+% ----------------------------------------------------------------
+\begin{document}
+\newpage
+\null
+\end{document}

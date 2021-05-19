@@ -1,0 +1,104 @@
+% ----------------------------------------------------------------
+% * Project           : Custom paper with detailed headers
+% * File name         : hex-dots.tex
+% * Author            : James Mendel; jrm@ku.edu; jrm.mendel@gmail.com
+% * Website           : jamesmendel.github.io
+% * Date created      : 11/13/2020
+% * Purpose           : Generate background with dots at vertices in hex pattern
+% * Revision History  :
+% *
+% * Date          Author        Description
+% * 11/13/2020    James Mendel  Document creation / first functionality 
+% *
+% ----------------------------------------------------------------
+
+\documentclass[letterpaper, 10pt]{article} % for letter sized paper (8.5" x 11") 
+% \usepackage[vmargin=2cm]{geometry}
+\usepackage[ansiapaper, total={7.5in, 9.1in}]{geometry}
+\usepackage{tikzpagenodes}
+\usetikzlibrary{shapes.geometric}
+\usepackage{lipsum}
+\usepackage{background}
+\usepackage{etoolbox}
+
+% --- Setting up header/footer ---
+\usepackage{fancyhdr}
+\usepackage[bottom,norule]{footmisc}
+
+% --- Import document info (change this file) ---
+\input{details.tex}
+
+% ----------------------------------------------------------------
+% Setup header from variables declared in details.tex
+% ----------------------------------------------------------------
+\pagestyle{fancy}
+\rfoot{}
+\lfoot{}
+\cfoot{}
+% --- LEFT HEADER SECTION ---
+\lhead{
+    \dueMonth{}
+    \oldstylenums{\dueDay} 
+    \oldstylenums{\dueYear}
+}
+% --- CENTER HEADER SECTION ---
+\chead{%
+        \textbf{\classNumber} \ifdefempty{\className}{}{\textemdash{ \className}}\\%
+        \assignmentType{ } \assignmentNumber%
+}
+% --- RIGHT HEADER SECTION ---
+\rhead{
+    \textsc{\name}\\
+    \ifdefempty{\kuid}{}{\textsc{kuid: \kuid}}}
+
+
+% ----------------------------------------------------------------
+% Create background grid of hexagons using tikzlibrary shapes.geometric
+% ----------------------------------------------------------------
+
+% Color of hexagons -- change this color to change the background color
+\definecolor{bgcolor}{RGB}{190,190,190}
+
+\backgroundsetup{
+contents={%
+    \begin{tikzpicture}[x=7.5mm,y=4.34mm]
+      % Set styling for hexagons and their vertices
+      \tikzset{
+        hex/.style={
+          regular polygon,
+          regular polygon sides=6,
+          inner sep=3mm,
+        }
+      }%
+      \tikzset{
+        vert/.style={
+            only marks,
+            mark=*,
+            mark size=0.2mm,
+            samples at={1,...,6},
+            line width=0.0mm,
+            color=bgcolor,
+            draw
+        }
+      }%
+    \foreach \i in {0,...,13} 
+        \foreach \j in {0,...,30} {
+                \node[hex](hexagon_top) at (2*\i,2*\j) {};
+                \draw[vert] plot (hexagon_top.corner \x);
+                \node[hex](hexagon_bottom) at (2*\i+1,2*\j+1) {};
+                \draw[vert] plot (hexagon_bottom.corner \x);
+            }%
+    \end{tikzpicture}
+},
+scale=1,
+angle=0,
+opacity=1
+}
+
+% ----------------------------------------------------------------
+% Render exactly one page with header and footer
+% ----------------------------------------------------------------
+\begin{document}
+\newpage
+\null
+\end{document}

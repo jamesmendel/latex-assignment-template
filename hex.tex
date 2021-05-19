@@ -1,0 +1,96 @@
+% ----------------------------------------------------------------
+% * Project           : Custom paper with detailed headers
+% * File name         : hex.tex
+% * Author            : James Mendel; jrm@ku.edu; jrm.mendel@gmail.com
+% * Website           : jamesmendel.github.io
+% * Date created      : 11/10/2020
+% * Purpose           : Hex background template generator.
+% * Revision History  :
+% *
+% * Date          Author        Description
+% * MM/DD/YYYY    First Last 
+% *
+% ----------------------------------------------------------------
+
+\documentclass[letterpaper, 10pt]{article} % for letter sized paper (8.5" x 11") 
+% \usepackage[vmargin=2cm]{geometry}
+\usepackage[ansiapaper, total={7.5in, 9.1in}]{geometry}
+\usepackage{tikzpagenodes}
+\usetikzlibrary{shapes.geometric}
+\usepackage{lipsum}
+\usepackage{background}
+\usepackage{etoolbox}
+
+% --- Setting up header/footer ---
+\usepackage{fancyhdr}
+\usepackage[bottom,norule]{footmisc}
+
+% --- Import document info (change this file) ---
+\input{details.tex}
+
+% ----------------------------------------------------------------
+% Setup header from variables declared in details.tex
+% ----------------------------------------------------------------
+\pagestyle{fancy}
+\rfoot{}
+\lfoot{}
+\cfoot{}
+% --- LEFT HEADER SECTION ---
+\lhead{
+    \dueMonth{}
+    \oldstylenums{\dueDay} 
+    \oldstylenums{\dueYear}
+}
+% --- CENTER HEADER SECTION ---
+\chead{%
+        \textbf{\classNumber} \ifdefempty{\className}{}{\textemdash{ \className}}\\%
+        \assignmentType{ } \assignmentNumber%
+}
+% --- RIGHT HEADER SECTION ---
+\rhead{
+    \textsc{\name}\\
+    \ifdefempty{\kuid}{}{\textsc{kuid: \kuid}}}
+
+
+% ----------------------------------------------------------------
+% Create background grid of hexagons using tikzlibrary shapes.geometric
+% ----------------------------------------------------------------
+
+% Color of hexagons -- change this color to change the background color
+\definecolor{bgcolor}{RGB}{210,210,210}
+
+\backgroundsetup{
+contents={%
+    \begin{tikzpicture}[x=7.5mm,y=4.34mm]
+      % some styles
+      \tikzset{
+        box/.style={
+          color=bgcolor,
+          regular polygon,
+          regular polygon sides=6,
+          minimum size=10mm,
+          inner sep=0mm,
+          outer sep=0mm,
+          rotate=0,
+        draw
+        }
+      }%
+    \foreach \i in {0,...,22} 
+        \foreach \j in {0,...,48} {
+                \node[box] at (2*\i,2*\j) {};
+                \node[box] at (2*\i+1,2*\j+1) {};
+            }%
+    \end{tikzpicture}
+},
+scale=.65,
+angle=0,
+opacity=1
+}
+
+% ----------------------------------------------------------------
+% Render exactly one page with header and footer
+% ----------------------------------------------------------------
+\begin{document}
+\newpage
+\null
+\end{document}
